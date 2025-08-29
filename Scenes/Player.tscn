@@ -14,6 +14,7 @@ script = ExtResource("1_xrdhm")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09142, 0)
 
 [node name="test_model" parent="3d_Model" instance=ExtResource("1_p0tjy")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.367, 0.541, -0.958)
@@ -23,4 +24,4 @@ shape = SubResource("CylinderShape3D_fcxd1")
 transform = Transform3D(0.999982, -0.00415413, -0.00427427, 0.00416936, 0.999985, 0.00355844, 0.00425941, -0.00357621, 0.999985, 4.2962, 0, -1.09191)
 
 [node name="Camera3D" type="Camera3D" parent="Camera_Mount"]
-transform = Transform3D(-0.998575, 8.36497e-05, 0.0533658, 8.73651e-05, 1, 6.71276e-05, -0.0533658, 7.17042e-05, -0.998575, 0.00473976, 3.44563, -8.23813)
+transform = Transform3D(1, -6.8494e-09, 7.91624e-09, -1.65346e-09, 1, 1.07102e-08, 0, -9.31323e-10, 1, -8.19572, 3.19497, 9.97134)

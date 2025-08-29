@@ -43,4 +43,4 @@ use_collision = true
 size = Vector3(6.92296, 1, 5.85718)
 
 [node name="Player" parent="." instance=ExtResource("1_4tkel")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90.0936, 105.741, 148.5)
+transform = Transform3D(-0.112388, 0, 0.993664, 0, 1, 0, -0.993664, 0, -0.112388, 90.0923, 105.753, 148.497)
