@@ -1,0 +1,121 @@
+[gd_scene load_steps=16 format=3 uid="uid://dpr7jdhm7d4a3"]
+
+[ext_resource type="PackedScene" uid="uid://bsyh3u1gjes0l" path="res://Scenes/Player.tscn" id="1_vvtm6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7st5d"]
+sky_top_color = Color(0.407771, 0.400116, 0.611216, 1)
+sky_horizon_color = Color(0.669322, 0.705287, 0.833114, 1)
+ground_bottom_color = Color(0.457333, 0.630597, 1, 1)
+ground_horizon_color = Color(0.669322, 0.705287, 0.833114, 1)
+
+[sub_resource type="Sky" id="Sky_oc0xq"]
+sky_material = SubResource("ProceduralSkyMaterial_7st5d")
+
+[sub_resource type="Environment" id="Environment_n6f3p"]
+background_mode = 2
+sky = SubResource("Sky_oc0xq")
+tonemap_mode = 2
+sdfgi_enabled = true
+fog_enabled = true
+fog_density = 0.005
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ninnr"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_s3dkr"]
+colors = PackedColorArray(1, 1, 1, 1, 0.273873, 0.273873, 0.273873, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qcco1"]
+gradient = SubResource("Gradient_s3dkr")
+
+[sub_resource type="Curve" id="Curve_0vasr"]
+_data = [Vector2(0, 0.032967), 0.0, 0.0, 0, 0, Vector2(0.391304, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.252747), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_y2oi0"]
+curve = SubResource("Curve_0vasr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x3xfd"]
+emission_shape = 3
+emission_box_extents = Vector3(32, 2, 32)
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+gravity = Vector3(0, -5.5, 0)
+radial_accel_min = -4.0
+radial_accel_max = 4.0
+tangential_accel_min = -8.0
+tangential_accel_max = 8.0
+damping_max = 4.0
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_y2oi0")
+color_ramp = SubResource("GradientTexture1D_qcco1")
+
+[sub_resource type="Gradient" id="Gradient_3ryof"]
+offsets = PackedFloat32Array(0.289474, 0.710526)
+colors = PackedColorArray(1, 1, 1, 1, 0.239216, 0.239216, 0.239216, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_075f5"]
+gradient = SubResource("Gradient_3ryof")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ck2k5"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.839216, 1, 1)
+albedo_texture = SubResource("GradientTexture2D_075f5")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_c6k7d"]
+material = SubResource("StandardMaterial3D_ck2k5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cl60a"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Test_Node" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_n6f3p")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170.435, 206.618, 355.78)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.384, 104.964, 177.89)
+use_collision = true
+size = Vector3(3, 3, 3)
+
+[node name="floor" type="CSGBox3D" parent="."]
+transform = Transform3D(64.8202, 0, 0, 0, 2.17508, 0, 0, 0, 62.784, 176.553, 103.385, 132.438)
+material_override = SubResource("StandardMaterial3D_ninnr")
+use_collision = true
+size = Vector3(6.92296, 1, 5.85718)
+
+[node name="Player" parent="." instance=ExtResource("1_vvtm6")]
+transform = Transform3D(-0.112388, 0, 0.993664, 0, 1, 0, -0.993664, 0, -0.112388, 88.1964, 105.753, 148.975)
+
+[node name="Snow" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92.9198, 131.223, 124.708)
+amount = 256
+lifetime = 3.5
+visibility_aabb = AABB(-56.7626, -68.8032, -63.9019, 114.256, 71.7281, 123.402)
+process_material = SubResource("ParticleProcessMaterial_x3xfd")
+draw_pass_1 = SubResource("QuadMesh_c6k7d")
+
+[node name="Buildings" type="Node" parent="."]
+
+[node name="build2" type="CSGBox3D" parent="Buildings"]
+transform = Transform3D(139.468, 0, 0, 0, 2721.34, 0, 0, 0, 46.4448, 1806.84, 8217.87, -778.714)
+material_override = SubResource("StandardMaterial3D_cl60a")
+use_collision = true
+size = Vector3(1.43246, 1.92297, 5.85718)
+
+[node name="build" type="CSGBox3D" parent="Buildings"]
+transform = Transform3D(11.8097, 0, 0, 0, 52.1665, 0, 0, 0, -6.81504, 141.053, 154.569, 133.914)
+material_override = SubResource("StandardMaterial3D_cl60a")
+use_collision = true
+size = Vector3(1.43246, 1.92297, 5.85718)

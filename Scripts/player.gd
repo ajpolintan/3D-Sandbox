@@ -7,20 +7,37 @@ const SPEED = 10.0
 const JUMP_VELOCITY = 4.5
 
 # Mouse Sensitivity 
-@export var sens_horizontal = 0.5
-@export var sens_vertical = 0.5
+@export var sensitivity = 0.5
 
-func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+var _camera_input_direction := Vector2.ZERO
+
+func _unhandled_input(event: InputEvent) -> void:
+	# check if the mouse moves AND if the input is within the game screen (aka mouse mode is GAME SCREEN)
+	var is_camera_motion := (
+		event is InputEventMouseMotion and
+		Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	)
+	
+	# if camera moves
+	if is_camera_motion:
+		_camera_input_direction = event.screen_relative * sensitivity
+	
 
 # Checks inputs. If there is a mouse input, rotate the player
 func _input(event):
-	if event is InputEventMouseMotion:
-		rotate_y(deg_to_rad(-event.relative.x * sens_horizontal))
-		model.rotate_y(deg_to_rad(event.relative.x * sens_horizontal))
-		camera_mount.rotate_x(deg_to_rad(-event.relative.y * sens_vertical))
+	if event.is_action_pressed("left_click"):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
 func _physics_process(delta: float) -> void:
+	# Camera Controls
+	camera_mount.rotation.x += _camera_input_direction.y * delta
+	camera_mount.rotation.x = clamp(camera_mount.rotation.x, -PI / 6.0, PI / 3.0)
+	camera_mount.rotation.y -= _camera_input_direction.x * delta
+	
+	_camera_input_direction = Vector2.ZERO
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta

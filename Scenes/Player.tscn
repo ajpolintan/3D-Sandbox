@@ -1,27 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsyh3u1gjes0l"]
+[gd_scene load_steps=5 format=3 uid="uid://bsyh3u1gjes0l"]
 
-[ext_resource type="PackedScene" uid="uid://2dp0cwfk6xw1" path="res://test_model.glb" id="1_p0tjy"]
-[ext_resource type="Script" path="res://Scenes/player.gd" id="1_xrdhm"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_xrdhm"]
+[ext_resource type="PackedScene" uid="uid://hfn2vs5s8ua3" path="res://Assets/3D_Models/characterFin.glb" id="2_b5l08"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_fcxd1"]
-height = 3.0
+height = 1.86043
 radius = 0.65
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mxqey"]
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_xrdhm")
 
 [node name="3d_Model" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09142, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8.28746, 0, -5.58709)
 
-[node name="test_model" parent="3d_Model" instance=ExtResource("1_p0tjy")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+[node name="characterFin" parent="3d_Model" instance=ExtResource("2_b5l08")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09142, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.367, 0.541, -0.958)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.367, 1.38282, -4.25023)
 shape = SubResource("CylinderShape3D_fcxd1")
 
 [node name="Camera_Mount" type="Node3D" parent="."]
-transform = Transform3D(0.999982, -0.00415413, -0.00427427, 0.00416936, 0.999985, 0.00355844, 0.00425941, -0.00357621, 0.999985, 4.2962, 0, -1.09191)
+unique_name_in_owner = true
+transform = Transform3D(0.999988, -0.00349063, -0.00349065, 0.00349065, 0.999994, -1.74846e-07, 0.00349063, -1.20098e-05, 0.999994, 4.2962, 1.45026, -3.46642)
 
-[node name="Camera3D" type="Camera3D" parent="Camera_Mount"]
-transform = Transform3D(1, -6.8494e-09, 7.91624e-09, -1.65346e-09, 1, 1.07102e-08, 0, -9.31323e-10, 1, -8.19572, 3.19497, 9.97134)
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera_Mount"]
+transform = Transform3D(0.999998, -0.00176224, 0.0011334, 0.00113342, 0.909926, 0.414769, -0.00176223, -0.414767, 0.909926, 0.00293303, 0.840618, -2.38419e-07)
+shape = SubResource("SphereShape3D_mxqey")
+spring_length = 10.0
+
+[node name="Camera3D" type="Camera3D" parent="Camera_Mount/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
