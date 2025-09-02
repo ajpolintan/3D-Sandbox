@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://dpr7jdhm7d4a3"]
+
+[ext_resource type="Shader" uid="uid://ctm0k1u8sjlom" path="res://Shaders/water_shader.tres" id="2_4na67"]
+[ext_resource type="PackedScene" uid="uid://bsyh3u1gjes0l" path="res://Scenes/Character/Player.tscn" id="3_18al8"]
+[ext_resource type="PackedScene" uid="uid://bq2on6ogk6prx" path="res://Shaders/snow_particle.tscn" id="4_lhso0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7st5d"]
+sky_top_color = Color(0.407771, 0.400116, 0.611216, 1)
+sky_horizon_color = Color(0.669322, 0.705287, 0.833114, 1)
+ground_bottom_color = Color(0.457333, 0.630597, 1, 1)
+ground_horizon_color = Color(0.669322, 0.705287, 0.833114, 1)
+
+[sub_resource type="Sky" id="Sky_oc0xq"]
+sky_material = SubResource("ProceduralSkyMaterial_7st5d")
+
+[sub_resource type="Environment" id="Environment_n6f3p"]
+background_mode = 2
+sky = SubResource("Sky_oc0xq")
+tonemap_mode = 2
+sdfgi_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.426659, 0.535744, 0.83699, 1)
+fog_density = 0.005
+
+[sub_resource type="Shader" id="Shader_37ese"]
+code = "shader_type spatial;
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sbx4t"]
+render_priority = 0
+shader = SubResource("Shader_37ese")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iawxr"]
+render_priority = 0
+shader = ExtResource("2_4na67")
+shader_parameter/UV_Scale = 4.0
+shader_parameter/direction_1 = Vector2(0.01, -0.01)
+shader_parameter/direction_2 = Vector2(0.05, 0.01)
+shader_parameter/Highlight_Threshold = 0.5
+shader_parameter/Main_Threshold = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cl60a"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="VisualShader" id="VisualShader_304ne"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+graph_offset = Vector2(-79.1157, -30.7438)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m410j"]
+render_priority = 0
+shader = SubResource("VisualShader_304ne")
+
+[node name="Test_Node" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_n6f3p")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170.435, 206.618, 355.78)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.93405, 0, 0, 0, 6.03946, 103.384, 105.972, 177.89)
+material_override = SubResource("ShaderMaterial_sbx4t")
+use_collision = true
+size = Vector3(3, 3, 3)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 93.2941, 108.678, 177.89)
+use_collision = true
+size = Vector3(3, 3, 3)
+
+[node name="floor" type="CSGBox3D" parent="."]
+transform = Transform3D(64.8202, 0, 0, 0, 2.17508, 0, 0, 0, 62.784, 186.135, 102.884, 92.6087)
+material_override = SubResource("ShaderMaterial_iawxr")
+use_collision = true
+size = Vector3(6.92296, 1, 5.85718)
+
+[node name="Player" parent="." instance=ExtResource("3_18al8")]
+transform = Transform3D(-0.112388, 0, 0.993664, 0, 1, 0, -0.993664, 0, -0.112388, 88.1964, 105.753, 148.975)
+
+[node name="Snow" parent="." instance=ExtResource("4_lhso0")]
+
+[node name="Buildings" type="Node" parent="."]
+
+[node name="build2" type="CSGBox3D" parent="Buildings"]
+transform = Transform3D(139.468, 0, 0, 0, 2721.34, 0, 0, 0, 46.4448, 1806.84, 8217.87, -778.714)
+material_override = SubResource("StandardMaterial3D_cl60a")
+use_collision = true
+size = Vector3(1.43246, 1.92297, 5.85718)
+
+[node name="build" type="CSGBox3D" parent="Buildings"]
+transform = Transform3D(11.8097, 0, 0, 0, 52.1665, 0, 0, 0, -6.81504, 141.053, 154.569, 133.914)
+material_override = SubResource("StandardMaterial3D_cl60a")
+use_collision = true
+size = Vector3(1.43246, 1.92297, 5.85718)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0283203, 140.789, 0.0763588)
+material_override = SubResource("ShaderMaterial_m410j")
